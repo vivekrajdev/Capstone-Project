@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cli
+  namespace: democap
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-cli
+  template:
+    metadata:
+      name: redis-cli
+      labels:
+        app: redis-cli
+    spec:
+      containers:
+      - name: redis-cli
+        image: 'redis:6.2-alpine' 
+        command: [ "/bin/sh", "-c", "sleep 100000" ]
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # ports:
+        # - containerPort: 6379
+      restartPolicy: Always

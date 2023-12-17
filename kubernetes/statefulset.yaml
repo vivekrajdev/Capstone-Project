@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-server
+  namespace: democap
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  serviceName: redis
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      volumes:
+        - name: vivek-pv-storage
+          persistentVolumeClaim:
+            claimName: vivek-pvc
+      containers:
+      - name: redis
+        image: redis:6.2-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+        volumeMounts:
+        - name: vivek-pv-storage
+          mountPath: "/var/lib/redis"
+        envFrom:
+        - configMapRef:
+            name: redis
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: democap
+  labels:
+    app: redis
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: redis
+---

@@ -1,0 +1,19 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: my-eks-201
+  region: us-east-1
+
+nodeGroups:
+  - name: ng-1-web
+    labels: { role: web }
+    instanceType: t2.medium
+    desiredCapacity: 1
+    minSize: 0
+    maxSize: 5
+    privateNetworking: true
+    taints:
+      - key: feaster
+        value: "true"
+        effect: "NoSchedule"

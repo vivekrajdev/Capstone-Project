@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vivek-pv
+  namespace: democap
+  labels:
+    type: vivek-pv
+spec:
+  claimRef:
+    name: vivek-pvc
+    namespace: demo
+  capacity:
+    storage: 11Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/lib/redis
