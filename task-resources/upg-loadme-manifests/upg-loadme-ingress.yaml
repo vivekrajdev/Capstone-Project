@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: upg-loadme-external
+  namespace: democap
+  annotations: # Reference for complete list of annotations: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: CreatedBy=vivek
+    alb.ingress.kubernetes.io/subnets: subnet-06d04d8c2ac6a8f52, subnet-0cb540d9545eaffdc 
+    alb.ingress.kubernetes.io/scheme: internet-facing
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: upg-loadme
+              port:
+                number: 80
